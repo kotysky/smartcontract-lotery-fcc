@@ -13,15 +13,17 @@
     "chai": "^4.2.0",
     "dotenv": "^16.3.1",
     "ethers": "^6.4.0",
-    "hardhat": "^2.17.1",
+    "hardhat": "^2.18.1",
     "hardhat-contract-sizer": "^2.10.0",
     "hardhat-deploy": "^0.11.36",
     "hardhat-gas-reporter": "^1.0.8",
-    "prettier": "^3.0.2",
+    "prettier": "^3.0.3",
     "prettier-plugin-solidity": "^1.0.0-beta.19",
     "solhint": "^3.6.2",
     "solidity-coverage": "^0.8.0",
     "typechain": "^8.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "global": "^4.4.0"
+  }
 }
