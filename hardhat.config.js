@@ -21,7 +21,7 @@ module.exports = {
             chainId: 11155111,
             blockConfirmations: 6,
             url: RPC_SEPOLIA_URL,
-            accounts: PRIVATE_KEY,
+            accounts: [PRIVATE_KEY],
         },
     },
     solidity: "0.8.19",
