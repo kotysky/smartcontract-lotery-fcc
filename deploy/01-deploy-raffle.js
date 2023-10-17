@@ -8,27 +8,44 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
     let vrfCoordinatorV2address, subscriptionId
+    /////////
+    const accounts = await ethers.getSigners()
+    signer = accounts[0]
+    /////////
 
     if (developmentChains.includes(network.name)) {
-        const vrfCoordinatorV2Mock = await ethers.getContract(
+        /*const vrfCoordinatorV2Mock = await ethers.getContractAt(
             //// COSAS RARAS
             "VRFCoordinatorV2Mock",
+        )*/
+        //const vrfCoordinatorV2Mock = await deployments.get("VRFCoordinatorV2Mock") //Guauu!! parece que funciona esto
+        const vrfCoordinatorV2Mock = await deployments.get("VRFCoordinatorV2Mock")
+        MockV2Coordinator = await ethers.getContractAt(
+            vrfCoordinatorV2Mock.abi,
+            vrfCoordinatorV2Mock.address,
+            signer,
         )
-        vrfCoordinatorV2address = vrfCoordinatorV2Mock.address
-        const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
-        const transactionRecipt = await transactionResponse.wait(1)
-        subscriptionId = transactionRecipt.event[0].args.subId
+        //////////////////////////
+
+        vrfCoordinatorV2address = MockV2Coordinator.address
+
+        const transactionResponse = await MockV2Coordinator.createSubscription()
+        const transactionReceipt = await transactionResponse.wait()
+        //subscriptionId = transactionReceipt.events[0].args.requestId
+        subscriptionId = 1
         //We have the subscription, then we need to fund the suscription
         //Usually you need link token  to a real network
-        await vrfCoordinatorV2Mock.fundSubcription(subscriptionId, VRF_SUB_FUND_AMOUNT)
+
+        await MockV2Coordinator.fundSubscription(subscriptionId, VRF_SUB_FUND_AMOUNT)
     } else {
-        vrfCoordinatorV2address = netwotkConfig[chainId]["vrfCoodinatorV2"]
+        vrfCoordinatorV2address = networkConfig[chainId]["vrfCoodinatorV2"]
         subscriptionId = networkConfig[chainId]["subscriptionId"]
     }
+
     const entranceFee = networkConfig[chainId]["entranceFee"]
-    const gasLane = networkConfig[chanId]["gasLane"]
+    const gasLane = networkConfig[chainId]["gasLane"]
     const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"]
-    const interval = networkConfig[chainId][interval]
+    const interval = networkConfig[chainId]["interval"]
 
     const args = [
         vrfCoordinatorV2address,
@@ -38,8 +55,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         callbackGasLimit,
         interval,
     ]
+
     const raffle = await deploy("Raffle", {
-        from: deployer,
+        //from: deployer,
+        from: signer,
         args: args,
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
