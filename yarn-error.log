@@ -1,8 +1,8 @@
 Arguments: 
-  /home/kotysky/.nvm/versions/node/v16.14.2/bin/node /home/kotysky/.yarn/bin/yarn.js add --dev @nomicfoundation/hardhat-etherscan
+  /home/kotysky/.nvm/versions/node/v16.14.2/bin/node /home/kotysky/.yarn/bin/yarn.js add --dev @nomicfoundation/hardhat-ethers: npm:hardhat-deploy-ethers@^0.3.0-beta.13
 
 PATH: 
-  /home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.vscode-server/bin/e7e037083ff4455cf320e344325dacb480062c3c/bin/remote-cli:/home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.nvm/versions/node/v16.14.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Python311/Scripts/:/mnt/c/Python311/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Users/KotySky/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/KotySky/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/KotySky/AppData/Roaming/npm:/snap/bin
+  /home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/remote-cli:/home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.nvm/versions/node/v16.14.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Intel/iCLS Client/:/mnt/c/Program Files/Intel/iCLS Client/:/mnt/c/Python311/Scripts/:/mnt/c/Python311/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Users/KotySky/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/KotySky/AppData/Roaming/npm:/mnt/c/Users/KotySky/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin
 
 Yarn version: 
   1.22.19
@@ -14,21 +14,12 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@nomicfoundation%2fhardhat-etherscan: Not found
-      at Request.params.callback [as _callback] (/home/kotysky/.yarn/lib/cli.js:66145:18)
-      at Request.self.callback (/home/kotysky/.yarn/lib/cli.js:140890:22)
-      at Request.emit (node:events:526:28)
-      at Request.<anonymous> (/home/kotysky/.yarn/lib/cli.js:141862:10)
-      at Request.emit (node:events:526:28)
-      at IncomingMessage.<anonymous> (/home/kotysky/.yarn/lib/cli.js:141784:12)
-      at Object.onceWrapper (node:events:645:28)
-      at IncomingMessage.emit (node:events:538:35)
-      at endReadableNT (node:internal/streams/readable:1345:12)
-      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
 
 npm manifest: 
   {
-    "license":"MIT",
+    "license": "MIT",
     "devDependencies": {
       "@chainlink/contracts": "^0.6.1",
       "@nomicfoundatiob/hardhat-ethers": "npm:hardhat-deploy-ethers",
@@ -42,14 +33,18 @@ npm manifest:
       "chai": "^4.2.0",
       "dotenv": "^16.3.1",
       "ethers": "^6.4.0",
-      "hardhat": "^2.17.1",
+      "hardhat": "^2.18.1",
+      "hardhat-contract-sizer": "^2.10.0",
       "hardhat-deploy": "^0.11.36",
       "hardhat-gas-reporter": "^1.0.8",
-      "prettier": "^3.0.2",
+      "prettier": "^3.0.3",
       "prettier-plugin-solidity": "^1.0.0-beta.19",
-      "solidity-coverage": "^0.8.0",
       "solhint": "^3.6.2",
+      "solidity-coverage": "^0.8.0",
       "typechain": "^8.1.0"
+    },
+    "dependencies": {
+      "global": "^4.4.0"
     }
   }
 
@@ -133,6 +128,11 @@ Lockfile:
       "@chainsafe/as-sha256" "^0.3.1"
       "@chainsafe/persistent-merkle-tree" "^0.4.2"
       case "^1.6.3"
+  
+  "@colors/colors@1.5.0":
+    version "1.5.0"
+    resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
+    integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
   
   "@eth-optimism/contracts@^0.5.21":
     version "0.5.40"
@@ -1549,7 +1549,7 @@ Lockfile:
       escape-string-regexp "^1.0.5"
       supports-color "^5.3.0"
   
-  chalk@^4.1.0, chalk@^4.1.2:
+  chalk@^4.0.0, chalk@^4.1.0, chalk@^4.1.2:
     version "4.1.2"
     resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.2.tgz#aac4e2b7734a740867aeb16bf02aad556a1e7a01"
     integrity sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==
@@ -1622,6 +1622,15 @@ Lockfile:
       string-width "^2.1.1"
     optionalDependencies:
       colors "^1.1.2"
+  
+  cli-table3@^0.6.0:
+    version "0.6.3"
+    resolved "https://registry.yarnpkg.com/cli-table3/-/cli-table3-0.6.3.tgz#61ab765aac156b52f222954ffc607a6f01dbeeb2"
+    integrity sha512-w5Jac5SykAeZJKntOxJCrm63Eg5/4dhMWIcuTbo9rpE+brgaSZo0RuNJZeOyMgsUdhDeojvgyQLmjI+K50ZGyg==
+    dependencies:
+      string-width "^4.2.0"
+    optionalDependencies:
+      "@colors/colors" "1.5.0"
   
   cliui@^7.0.2:
     version "7.0.4"
@@ -1841,6 +1850,11 @@ Lockfile:
     integrity sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==
     dependencies:
       path-type "^4.0.0"
+  
+  dom-walk@^0.1.0:
+    version "0.1.2"
+    resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
+    integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
   
   dotenv@^16.3.1:
     version "16.3.1"
@@ -2408,6 +2422,14 @@ Lockfile:
       kind-of "^6.0.2"
       which "^1.3.1"
   
+  global@^4.4.0:
+    version "4.4.0"
+    resolved "https://registry.yarnpkg.com/global/-/global-4.4.0.tgz#3e7b105179006a323ed71aafca3e9c57a5cc6406"
+    integrity sha512-wv/LAoHdRE3BeTGz53FAamhGlPLhlssK45usmGFThIi4XqnBmjKQ16u+RNbP7WvigRZDxUsM0J3gcQ5yicaL0w==
+    dependencies:
+      min-document "^2.19.0"
+      process "^0.11.10"
+  
   globby@^10.0.1:
     version "10.0.2"
     resolved "https://registry.yarnpkg.com/globby/-/globby-10.0.2.tgz#277593e745acaa4646c3ab411289ec47a0392543"
@@ -2438,6 +2460,15 @@ Lockfile:
       wordwrap "^1.0.0"
     optionalDependencies:
       uglify-js "^3.1.4"
+  
+  hardhat-contract-sizer@^2.10.0:
+    version "2.10.0"
+    resolved "https://registry.yarnpkg.com/hardhat-contract-sizer/-/hardhat-contract-sizer-2.10.0.tgz#72646f43bfe50e9a5702c9720c9bc3e77d93a2c9"
+    integrity sha512-QiinUgBD5MqJZJh1hl1jc9dNnpJg7eE/w4/4GEnrcmZJJTDbVFNe3+/3Ep24XqISSkYxRz36czcPHKHd/a0dwA==
+    dependencies:
+      chalk "^4.0.0"
+      cli-table3 "^0.6.0"
+      strip-ansi "^6.0.0"
   
   hardhat-deploy@^0.11.36:
     version "0.11.42"
@@ -2478,7 +2509,7 @@ Lockfile:
       eth-gas-reporter "^0.2.25"
       sha1 "^1.1.1"
   
-  hardhat@^2.17.1:
+  hardhat@^2.18.1:
     version "2.18.1"
     resolved "https://registry.yarnpkg.com/hardhat/-/hardhat-2.18.1.tgz#6339d656dbf0510b51457b0f0746e5b9cc7a1756"
     integrity sha512-b55rW7Ka+fvJeg6oWuBTXoYQEUurevCCankjGNTwczwD3GnkhV9GEei7KUT+9IKmWx3lC+zyxlFxeDbg0gUoHw==
@@ -3050,6 +3081,13 @@ Lockfile:
     dependencies:
       mime-db "1.52.0"
   
+  min-document@^2.19.0:
+    version "2.19.0"
+    resolved "https://registry.yarnpkg.com/min-document/-/min-document-2.19.0.tgz#7bd282e3f5842ed295bb748cdd9f1ffa2c824685"
+    integrity sha512-9Wy1B3m3f66bPPmU5hdA4DR4PB2OfDU/+GS3yAB7IQozE3tqXaVv2zOjgla7MEGSRv95+ILmOuvhLkOK6wJtCQ==
+    dependencies:
+      dom-walk "^0.1.0"
+  
   minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
     version "1.0.1"
     resolved "https://registry.yarnpkg.com/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz#2e194de044626d4a10e7f7fbc00ce73e83e4d5c7"
@@ -3394,7 +3432,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.8.8.tgz#e8c5d7e98a4305ffe3de2e1fc4aca1a71c28b1da"
     integrity sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==
   
-  prettier@^3.0.2:
+  prettier@^3.0.3:
     version "3.0.3"
     resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.0.3.tgz#432a51f7ba422d1469096c0fdc28e235db8f9643"
     integrity sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==
@@ -3403,6 +3441,11 @@ Lockfile:
     version "2.0.1"
     resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
     integrity sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==
+  
+  process@^0.11.10:
+    version "0.11.10"
+    resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
+    integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
   
   promise@^8.0.0:
     version "8.3.0"
