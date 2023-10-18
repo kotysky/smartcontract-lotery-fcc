@@ -10,7 +10,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     let vrfCoordinatorV2address, subscriptionId, vrfCoordinatorV2Mock
 
     if (developmentChains.includes(network.name)) {
-        const vrfCoordinatorV2MockDeploy = await deployments.get("VRFCoordinatorV2Mock") //Guauu!! parece que funciona esto
+        const vrfCoordinatorV2MockDeploy = await deployments.get(
+            "VRFCoordinatorV2Mock",
+        ) //Guauu!! parece que funciona esto
         vrfCoordinatorV2address = vrfCoordinatorV2MockDeploy.address /// Tu puta madreee!!!
 
         vrfCoordinatorV2Mock = await ethers.getContractAt(
@@ -26,7 +28,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
         subscriptionId = 1
 
-        await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, VRF_SUB_FUND_AMOUNT)
+        await vrfCoordinatorV2Mock.fundSubscription(
+            subscriptionId,
+            VRF_SUB_FUND_AMOUNT,
+        )
     } else {
         vrfCoordinatorV2address = networkConfig[chainId]["vrfCoodinatorV2"]
         subscriptionId = networkConfig[chainId]["subscriptionId"]
@@ -39,11 +44,11 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     const arguments = [
         vrfCoordinatorV2address,
-        entranceFee,
-        gasLane,
         subscriptionId,
-        callbackGasLimit,
+        gasLane,
         interval,
+        entranceFee,
+        callbackGasLimit,
     ]
 
     const raffle = await deploy("Raffle", {
