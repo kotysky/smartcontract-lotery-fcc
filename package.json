@@ -24,6 +24,7 @@
     "typechain": "^8.1.0"
   },
   "dependencies": {
-    "global": "^4.4.0"
+    "global": "^4.4.0",
+    "solc": "0.8.7-fixed"
   }
 }

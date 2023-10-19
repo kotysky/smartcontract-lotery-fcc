@@ -1,4 +1,4 @@
-const { assert } = require("chai")
+const { assert, expect } = require("chai")
 const { getNamedAccounts, deployments, ethers } = require("hardhat")
 const { developmentChains, networkConfig } = require("../../helper-hardhat-config")
 const {
@@ -21,9 +21,6 @@ const {
                   raffleDeploy.abi,
                   raffleDeploy.address,
               )
-              console.log(raffleDeploy)
-              console.log(raffle)
-
               const vrfCoordinatorV2MockDeploy = await deployments.get(
                   "VRFCoordinatorV2Mock",
               )
@@ -38,11 +35,17 @@ const {
 
                   const raffleState = await raffle.getRaffleState()
                   const interval = await raffle.getInterval()
-                  console.log(interval)
                   assert.equal(raffleState.toString(), "0")
                   assert.equal(
                       interval.toString(),
                       networkConfig[network.config.chainId]["interval"],
+                  )
+              })
+          })
+          describe("enterRaffle", async () => {
+              it("reverts when you dont pay enough", async () => {
+                  await expect(raffle.enterRaffle()).to.be.revertedWith(
+                      "Raffle__SendMoreToEnterRaffle",
                   )
               })
           })
