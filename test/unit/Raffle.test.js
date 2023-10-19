@@ -49,9 +49,11 @@ const {
           })
           describe("enterRaffle", () => {
               it("reverts when you dont pay enough", async () => {
-                  expect(raffle.enterRaffle()).to.be.revertedWith(
+                  /*await expect(raffle.enterRaffle()).to.be.revertedWith("Raffle__SendMoreToEnterRaffle") // Error Ethers 5*/
+                  await expect(raffle.enterRaffle()).to.be.revertedWithCustomError(
+                      raffle,
                       "Raffle__SendMoreToEnterRaffle",
-                  )
+                  ) // Ether 6 works!!*/
               })
               it("records players when they enters", async () => {
                   await raffle.enterRaffle({ value: raffleEntranceFee })
@@ -73,9 +75,12 @@ const {
 
                   await raffle.performUpkeep("0x")
                   //console.log("hi!")
-                  expect(
+                  /*await expect(
                       raffle.enterRaffle({ value: raffleEntranceFee }),
-                  ).to.be.revertedWith("Raffle__RaffleNotOpenn")
+                  ).to.be.revertedWith("Raffle__RaffleNotOpenn")// Error Ethers 5*/
+                  await expect(
+                      raffle.enterRaffle({ value: raffleEntranceFee }),
+                  ).to.be.revertedWithCustomError(raffle, "Raffle__RaffleNotOpen") // Ether 6 works!!
               })
           })
           describe("checkUpkeep", () => {
@@ -129,6 +134,14 @@ const {
                   await network.provider.send("evm_mine", [])
                   const tx = await raffle.performUpkeep("0x")
                   assert(tx)
+              })
+              it("reverts when checkUpkeep is false", async () => {
+                  /*await expect(raffle.performUpkeep("0x")).to.be.revertedWith(
+                      "Raffle__UpkeepNotNeeded",
+                  ) Error ether 5*/
+                  await expect(
+                      raffle.performUpkeep("0x"),
+                  ).to.be.revertedWithCustomError(raffle, "Raffle__UpkeepNotNeeded") // Ether 6 works!!
               })
           })
       })
