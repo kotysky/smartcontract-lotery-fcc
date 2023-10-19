@@ -1,5 +1,5 @@
 Arguments: 
-  /home/kotysky/.nvm/versions/node/v16.14.2/bin/node /home/kotysky/.yarn/bin/yarn.js add --dev @nomicfoundation/hardhat-ethers: npm:hardhat-deploy-ethers@^0.3.0-beta.13
+  /home/kotysky/.nvm/versions/node/v16.14.2/bin/node /home/kotysky/.yarn/bin/yarn.js add @chailink/contracts
 
 PATH: 
   /home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.vscode-server/bin/6c3e3dba23e8fadc360aed75ce363ba185c49794/bin/remote-cli:/home/kotysky/.yarn/bin:/home/kotysky/.config/yarn/global/node_modules/.bin:/home/kotysky/.nvm/versions/node/v16.14.2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files (x86)/Intel/iCLS Client/:/mnt/c/Program Files/Intel/iCLS Client/:/mnt/c/Python311/Scripts/:/mnt/c/Python311/:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/nodejs/:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/mnt/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/mnt/c/Users/KotySky/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/KotySky/AppData/Roaming/npm:/mnt/c/Users/KotySky/AppData/Local/Programs/Microsoft VS Code/bin:/snap/bin
@@ -14,8 +14,17 @@ Platform:
   linux x64
 
 Trace: 
-  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
-      at GetAddrInfoReqWrap.onlookup [as oncomplete] (node:dns:71:26)
+  Error: https://registry.yarnpkg.com/@chailink%2fcontracts: Not found
+      at Request.params.callback [as _callback] (/home/kotysky/.yarn/lib/cli.js:66145:18)
+      at Request.self.callback (/home/kotysky/.yarn/lib/cli.js:140890:22)
+      at Request.emit (node:events:526:28)
+      at Request.<anonymous> (/home/kotysky/.yarn/lib/cli.js:141862:10)
+      at Request.emit (node:events:526:28)
+      at IncomingMessage.<anonymous> (/home/kotysky/.yarn/lib/cli.js:141784:12)
+      at Object.onceWrapper (node:events:645:28)
+      at IncomingMessage.emit (node:events:538:35)
+      at endReadableNT (node:internal/streams/readable:1345:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
 
 npm manifest: 
   {
@@ -44,7 +53,8 @@ npm manifest:
       "typechain": "^8.1.0"
     },
     "dependencies": {
-      "global": "^4.4.0"
+      "global": "^4.4.0",
+      "solc": "0.8.7-fixed"
     }
   }
 
@@ -3777,6 +3787,21 @@ Lockfile:
     version "0.7.3"
     resolved "https://registry.yarnpkg.com/solc/-/solc-0.7.3.tgz#04646961bd867a744f63d2b4e3c0701ffdc7d78a"
     integrity sha512-GAsWNAjGzIDg7VxzP6mPjdurby3IkGCjQcM8GFYZT6RyaoUZKmMU6Y7YwG+tFGhv7dwZ8rmR4iwFDrrD99JwqA==
+    dependencies:
+      command-exists "^1.2.8"
+      commander "3.0.2"
+      follow-redirects "^1.12.1"
+      fs-extra "^0.30.0"
+      js-sha3 "0.8.0"
+      memorystream "^0.3.1"
+      require-from-string "^2.0.0"
+      semver "^5.5.0"
+      tmp "0.0.33"
+  
+  solc@0.8.7-fixed:
+    version "0.8.7-fixed"
+    resolved "https://registry.yarnpkg.com/solc/-/solc-0.8.7-fixed.tgz#76eb37d33637ad278ad858e2633e9da597d877ac"
+    integrity sha512-nWZRkdPwfBpimAelO30Bz7/hxoj+mylb30gEpBL8hhEWR4xqu2ezQAxWK1Hz5xx1NqesbgGjSgnGul49tRHWgQ==
     dependencies:
       command-exists "^1.2.8"
       commander "3.0.2"

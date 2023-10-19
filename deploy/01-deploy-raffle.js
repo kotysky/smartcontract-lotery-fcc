@@ -62,6 +62,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         log("Verifying!...")
         await verify(raffle.address, args)
     }
+    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address) //Error en los tests si no se añade esto!!!
     log("---------------------------------------------------------")
 }
 
