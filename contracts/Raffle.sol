@@ -7,11 +7,7 @@ import "@chainlink/contracts/src/v0.8/automation/interfaces/AutomationCompatible
 import "hardhat/console.sol";
 
 /* Errors */
-error Raffle__UpkeepNotNeeded(
-    uint256 currentBalance,
-    uint256 numPlayers,
-    uint256 raffleState
-);
+error Raffle__UpkeepNotNeeded(uint256 currentBalance, uint256 numPlayers, uint256 raffleState);
 error Raffle__TransferFailed();
 error Raffle__SendMoreToEnterRaffle();
 error Raffle__RaffleNotOpen();
@@ -94,12 +90,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
      */
     function checkUpkeep(
         bytes memory /* checkData */
-    )
-        public
-        view
-        override
-        returns (bool upkeepNeeded, bytes memory /* performData */)
-    {
+    ) public view override returns (bool upkeepNeeded, bytes memory /* performData */) {
         bool isOpen = RaffleState.OPEN == s_raffleState;
         bool timePassed = ((block.timestamp - s_lastTimeStamp) > i_interval);
         bool hasPlayers = s_players.length > 0;
@@ -184,7 +175,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         return s_players[index];
     }
 
-    function getLastTimeStamp() public view returns (uint256) {
+    function getLatestTimeStamp() public view returns (uint256) {
         return s_lastTimeStamp;
     }
 

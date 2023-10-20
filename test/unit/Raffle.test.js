@@ -131,7 +131,7 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
 
                   //console.log("transaction events", txReceipt.logs) // Ether 6 works
 
-                  ///// Events  Ethers 6 works ////
+                  ///// Events  Ethers 6 works /////////////////////////////////////////////////////////////
                   const filter = raffle.filters.RequestedRaffleWinner
                   const events = await raffle.queryFilter(filter, -1)
                   const event = events[0]
@@ -139,7 +139,7 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                   const args = event.args
                   //console.log(args, "\n---------------------------------")
                   expect(event.fragment.name).to.equal("RequestedRaffleWinner")
-                  /////////////////////////////////////////////
+                  ///////////////////////////////////////////////////////////////////////////////////////////
                   const raffleState = await raffle.getRaffleState()
 
                   // Ethers 6 work
@@ -154,7 +154,6 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                   await network.provider.send("evm_mine", [])
               })
               it("can only be called after performUpkeep", async () => {
-                  console.log("hola")
                   await expect(
                       //vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.address()),// Error Ethers 5
                       vrfCoordinatorV2Mock.fulfillRandomWords(0, raffle.getAddress()), // Ethers 6 work
@@ -167,6 +166,7 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                   const addicionalEntrants = 3
                   const startingAccountIndex = 1 // deployer= 0
                   const accounts = await ethers.getSigners()
+
                   for (
                       let i = startingAccountIndex;
                       i < startingAccountIndex + addicionalEntrants;
@@ -175,7 +175,57 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                       const accountConnectedRaffle = raffle.connect(accounts[i])
                       await accountConnectedRaffle.enterRaffle({ value: raffleEntranceFee })
                   }
-                  const startingTimeStamp = await raffle.getLastTimeStamp()
+
+                  const startingTimeStamp = await raffle.getLatestTimeStamp()
+
+                  await new Promise(async (resolve, reject) => {
+                      raffle.once("WinnerPicked", async () => {
+                          console.log("Found the events!")
+                          try {
+                              const recentWinner = await raffle.getRecentWinner()
+                              /*console.log(recentWinner)
+                              console.log(accounts[2].address)
+                              console.log(accounts[0].address)
+                              console.log(accounts[1].address)
+                              console.log(accounts[3].address)*/
+                              const raffleState = await raffle.getRaffleState()
+                              const endingTimeStamp = await raffle.getLatestTimeStamp()
+                              const numPlayers = await raffle.getNumberOfPlayers()
+                              const winnerEndingBalance = await accounts[1].getBalance()
+                              assert.equal(numPlayers.toString(), "0")
+                              assert.equal(raffleState.toString(), "0")
+                              /*console.log("---------------------------------------")
+                              console.log(startingTimeStamp)
+                              console.log("---------------------------------------")
+                              console.log(endingTimeStamp)
+                              console.log("---------------------------------------")*/
+                              assert(endingTimeStamp > startingTimeStamp) /////////////
+                              resolve()
+                          } catch (e) {
+                              //console.log("Error!!!")
+                              console.log(e)
+                              reject()
+                          }
+                      })
+                      //
+                      const tx = await raffle.performUpkeep("0x")
+                      const txReceipt = await tx.wait(1)
+
+                      //const winnerStartingBalance = await accounts[1].getBalance()
+                      console.log("Hola")
+                      //console.log("transaction events", txReceipt.logs) // Ether 6 works
+                      const filter = raffle.filters.RequestedRaffleWinner
+                      const events = await raffle.queryFilter(filter, -1)
+                      const event = events[0]
+                      //console.log(event, "\n-----------------------------")
+
+                      const args = event.args
+
+                      await vrfCoordinatorV2Mock.fulfillRandomWords(
+                          args.requestId,
+                          raffle.getAddress(),
+                      )
+                  })
               })
           })
       })
