@@ -163,5 +163,19 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                       vrfCoordinatorV2Mock.fulfillRandomWords(1, raffle.getAddress()), // Ethers 6 work
                   ).to.be.revertedWith("nonexistent request")
               })
+              it("picks a winner, resets the lotery, and sends money", async () => {
+                  const addicionalEntrants = 3
+                  const startingAccountIndex = 1 // deployer= 0
+                  const accounts = await ethers.getSigners()
+                  for (
+                      let i = startingAccountIndex;
+                      i < startingAccountIndex + addicionalEntrants;
+                      i++
+                  ) {
+                      const accountConnectedRaffle = raffle.connect(accounts[i])
+                      await accountConnectedRaffle.enterRaffle({ value: raffleEntranceFee })
+                  }
+                  const startingTimeStamp = await raffle.getLastTimeStamp()
+              })
           })
       })
