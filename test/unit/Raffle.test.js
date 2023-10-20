@@ -192,6 +192,7 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                               const endingTimeStamp = await raffle.getLatestTimeStamp()
                               const numPlayers = await raffle.getNumberOfPlayers()
                               const winnerEndingBalance = await accounts[1].getBalance()
+                              //const winnerEndingBalance = await ethers.getBalance(accounts[1])
                               assert.equal(numPlayers.toString(), "0")
                               assert.equal(raffleState.toString(), "0")
                               /*console.log("---------------------------------------")
