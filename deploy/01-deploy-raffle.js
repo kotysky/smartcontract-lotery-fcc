@@ -23,13 +23,21 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         const transactionResponse = await vrfCoordinatorV2Mock.createSubscription()
         const transactionReceipt = await transactionResponse.wait(1)
 
-        //subscriptionId = transactionReceipt.events[0].args.subId
+        //subscriptionId = transactionReceipt.events[0].args.subId // Error Ethers 5
         //subscriptionId = transactionReceipt.logs[1].args.requestId
 
-        subscriptionId = 1
+        ////////////////////////////////
+        //             Ethers 6 work
+        const filter = vrfCoordinatorV2Mock.filters.SubscriptionCreated
+        const events = await vrfCoordinatorV2Mock.queryFilter(filter, -1)
+        const event = events[0]
+        const args = event.args
+        subscriptionId = args.subId
+        //console.log("-----------------\n", Number(subscriptionId))
+        ///////////////////////////////
 
         await vrfCoordinatorV2Mock.fundSubscription(
-            subscriptionId,
+            Number(subscriptionId),
             VRF_SUB_FUND_AMOUNT,
         )
     } else {
