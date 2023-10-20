@@ -143,5 +143,34 @@ const {
                       raffle.performUpkeep("0x"),
                   ).to.be.revertedWithCustomError(raffle, "Raffle__UpkeepNotNeeded") // Ether 6 works!!
               })
+              it("updates the raffle state,emits and event, and calls the vrf coodinator", async () => {
+                  await raffle.enterRaffle({ value: raffleEntranceFee })
+                  await network.provider.send("evm_increaseTime", [
+                      Number(interval) + 1,
+                  ])
+                  await network.provider.send("evm_mine", [])
+                  const txResponse = await raffle.performUpkeep("0x")
+                  const txReceipt = await txResponse.wait(1)
+                  //const requestId = txReceipt.events[1].args.requestId// Error Ether 5
+
+                  //console.log("transaction events", txReceipt.logs) // Ether 6 works
+
+                  ///// Events  Ethers 6 works ////
+                  const filter = raffle.filters.RequestedRaffleWinner
+                  const events = await raffle.queryFilter(filter, -1)
+                  const event = events[0]
+                  //console.log(event, "\n-----------------------------")
+                  const args = event.args
+                  //console.log(args, "\n---------------------------------")
+                  await expect(event.fragment.name).to.equal("RequestedRaffleWinner")
+                  /////////////////////////////////////////////
+                  const raffleState = await raffle.getRaffleState()
+                  assert(Number(args.requestId) > 0)
+                  console.log(
+                      args.requestId,
+                      "\n-----------------------------------------",
+                  )
+                  assert(Number(raffleState) == 1)
+              })
           })
       })
