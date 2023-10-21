@@ -198,40 +198,35 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                               // Ethers 6 work
                               const winnerEndingBalance =
                                   await ethers.provider.getBalance(recentWinner)
-                              //console.log(winnerEndingBalance, "ending")
+
                               assert.equal(numPlayers.toString(), "0")
                               assert.equal(raffleState.toString(), "0")
-                              /*console.log("---------------------------------------")
-                              console.log(startingTimeStamp)
-                              console.log("---------------------------------------")
-                              console.log(endingTimeStamp)
-                              console.log("---------------------------------------")*/
+
                               assert(endingTimeStamp > startingTimeStamp) /////////////
 
-                              const pruebaMul = raffleEntranceFee.add(4)
-
-                              /*const winnerFinal = (
+                              //////////////// Ether 6 work: explicit conversion BigInt //////////////
+                              const winnerFinalBalanceArgToAssert =
                                   winnerStartingBalance +
-                                  raffleEntranceFee * additionalEntrants +
+                                  raffleEntranceFee * BigInt(additionalEntrants) +
                                   raffleEntranceFee
-                              ).toString()*/
+                              ////////////////////////////////////////////////////////
 
-                              assert(
-                                  winnerEndingBalance.toString(),
-                                  //////////     Error Ethers 5   //////////
-                                  /*winnerStartingBalance.add(
+                              //////////     Error Ethers 5   //////////
+                              /*winnerStartingBalance.add(
                                       raffleEntranceFee
                                           .mul(additionalEntrants)
                                           .add(raffleEntranceFee)
                                           .toString(),
                                   ),*/
-                                  winnerFinal.toString(),
+                              //////////////////////////////////////////
+
+                              assert(
+                                  winnerEndingBalance.toString(),
+                                  winnerFinalBalanceArgToAssert.toString(),
                               )
-                              console.log(winnerEndingBalance)
-                              console.log("--------------", winnerFinal)
+
                               resolve()
                           } catch (e) {
-                              //console.log("Error!!!")
                               console.log(e)
                               reject()
                           }
@@ -245,7 +240,6 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
 
                       // Ethers 6 work
                       const winnerStartingBalance = await ethers.provider.getBalance(accounts[1])
-                      // console.log(winnerStartingBalance, "start")
 
                       // Ether 6 works
                       //console.log("transaction events", txReceipt.logs)
