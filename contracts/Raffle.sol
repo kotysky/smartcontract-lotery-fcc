@@ -139,7 +139,7 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
         // 20 * 10 = 200
         // 2
         // 202 % 10 = 2
-        uint256 indexOfWinner = randomWords[0] % s_players.length;
+        uint256 indexOfWinner = randomWords[0] % s_players.length; //Modulo operator %
         address payable recentWinner = s_players[indexOfWinner];
         s_recentWinner = recentWinner;
         s_players = new address payable[](0);

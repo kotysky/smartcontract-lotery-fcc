@@ -163,13 +163,13 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                   ).to.be.revertedWith("nonexistent request")
               })
               it("picks a winner, resets the lotery, and sends money", async () => {
-                  const addicionalEntrants = 3
+                  const additionalEntrants = 3
                   const startingAccountIndex = 1 // deployer= 0
                   const accounts = await ethers.getSigners()
 
                   for (
                       let i = startingAccountIndex;
-                      i < startingAccountIndex + addicionalEntrants;
+                      i < startingAccountIndex + additionalEntrants;
                       i++
                   ) {
                       const accountConnectedRaffle = raffle.connect(accounts[i])
@@ -181,8 +181,8 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                   await new Promise(async (resolve, reject) => {
                       raffle.once("WinnerPicked", async () => {
                           console.log("Found the events!")
+                          const recentWinner = await raffle.getRecentWinner()
                           try {
-                              const recentWinner = await raffle.getRecentWinner()
                               /*console.log(recentWinner)
                               console.log(accounts[2].address)
                               console.log(accounts[0].address)
@@ -191,8 +191,14 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                               const raffleState = await raffle.getRaffleState()
                               const endingTimeStamp = await raffle.getLatestTimeStamp()
                               const numPlayers = await raffle.getNumberOfPlayers()
-                              const winnerEndingBalance = await accounts[1].getBalance()
-                              //const winnerEndingBalance = await ethers.getBalance(accounts[1])
+
+                              // Error Ethers 5
+                              //const winnerEndingBalance = await accounts[1].getBalance()
+
+                              // Ethers 6 work
+                              const winnerEndingBalance =
+                                  await ethers.provider.getBalance(recentWinner)
+                              //console.log(winnerEndingBalance, "ending")
                               assert.equal(numPlayers.toString(), "0")
                               assert.equal(raffleState.toString(), "0")
                               /*console.log("---------------------------------------")
@@ -201,6 +207,28 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                               console.log(endingTimeStamp)
                               console.log("---------------------------------------")*/
                               assert(endingTimeStamp > startingTimeStamp) /////////////
+
+                              const pruebaMul = raffleEntranceFee.add(4)
+
+                              /*const winnerFinal = (
+                                  winnerStartingBalance +
+                                  raffleEntranceFee * additionalEntrants +
+                                  raffleEntranceFee
+                              ).toString()*/
+
+                              assert(
+                                  winnerEndingBalance.toString(),
+                                  //////////     Error Ethers 5   //////////
+                                  /*winnerStartingBalance.add(
+                                      raffleEntranceFee
+                                          .mul(additionalEntrants)
+                                          .add(raffleEntranceFee)
+                                          .toString(),
+                                  ),*/
+                                  winnerFinal.toString(),
+                              )
+                              console.log(winnerEndingBalance)
+                              console.log("--------------", winnerFinal)
                               resolve()
                           } catch (e) {
                               //console.log("Error!!!")
@@ -210,22 +238,28 @@ const { isCallTrace } = require("hardhat/internal/hardhat-network/stack-traces/m
                       })
                       //
                       const tx = await raffle.performUpkeep("0x")
-                      const txReceipt = await tx.wait(1)
+                      //const txReceipt = await tx.wait(1)// no necesario pero correcto
 
-                      //const winnerStartingBalance = await accounts[1].getBalance()
-                      console.log("Hola")
-                      //console.log("transaction events", txReceipt.logs) // Ether 6 works
+                      // Error Ethers 5
+                      // const winnerStartingBalance = await accounts[1].getBalance()
+
+                      // Ethers 6 work
+                      const winnerStartingBalance = await ethers.provider.getBalance(accounts[1])
+                      // console.log(winnerStartingBalance, "start")
+
+                      // Ether 6 works
+                      //console.log("transaction events", txReceipt.logs)
+
+                      ////////////////////////////////////////////////////////////
+                      //                Ethers 6 work            /////////////////
                       const filter = raffle.filters.RequestedRaffleWinner
                       const events = await raffle.queryFilter(filter, -1)
-                      const event = events[0]
-                      //console.log(event, "\n-----------------------------")
-
-                      const args = event.args
-
+                      const args = events[0].args
                       await vrfCoordinatorV2Mock.fulfillRandomWords(
                           args.requestId,
                           raffle.getAddress(),
                       )
+                      /////////////////////////////////////////////////////////////
                   })
               })
           })
