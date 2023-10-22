@@ -12,7 +12,7 @@ const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
 module.exports = {
     defaultNetwork: "hardhat",
-    nerworks: {
+    networks: {
         hardhat: {
             chainId: 31337,
             blockConfirmations: 1,
@@ -40,6 +40,6 @@ module.exports = {
         },
     },
     mocha: {
-        timeout: 20000, //200 seconds max
+        timeout: 30000, //200 seconds max
     },
 }
