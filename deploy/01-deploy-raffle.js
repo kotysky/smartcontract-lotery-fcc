@@ -1,6 +1,6 @@
 const { network, ethers } = require("hardhat")
 const { developmentChains, networkConfig } = require("../helper-hardhat-config")
-const { verify } = require("../helper-hardhat-config")
+const { verify } = require("../utils/verify")
 const VRF_SUB_FUND_AMOUNT = ethers.parseEther("2")
 
 module.exports = async ({ getNamedAccounts, deployments }) => {
@@ -33,17 +33,25 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         subscriptionId = args.subId
         //console.log("-----------------\n", Number(subscriptionId))
         ///////////////////////////////
-
+        const name = networkConfig[chainId]["name"]
+        console.log("Name: ", name)
         await vrfCoordinatorV2Mock.fundSubscription(Number(subscriptionId), VRF_SUB_FUND_AMOUNT)
     } else {
-        vrfCoordinatorV2address = networkConfig[chainId]["vrfCoodinatorV2"]
+        /*const name = networkConfig[chainId]["name"]
+        console.log("Name: ", name)*/
+        console.log("ChainId:", chainId)
+        vrfCoordinatorV2address = networkConfig[chainId]["vrfCoordinatorV2"]
+        console.log("Address:", vrfCoordinatorV2address)
         subscriptionId = networkConfig[chainId]["subscriptionId"]
+        console.log(vrfCoordinatorV2address, "----", subscriptionId)
     }
-
+    const name = networkConfig[chainId]["name"]
+    console.log("Name: ", name)
     const entranceFee = networkConfig[chainId]["entranceFee"]
     const gasLane = networkConfig[chainId]["gasLane"]
     const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"]
     const interval = networkConfig[chainId]["interval"]
+    console.log(entranceFee, "    ", callbackGasLimit, "   ", callbackGasLimit, "   ", interval)
 
     const arguments = [
         vrfCoordinatorV2address,
@@ -63,9 +71,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("Verifying!...")
-        await verify(raffle.address, args)
+        await verify(raffle.address, arguments)
     }
-    await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address) //Error en los tests si no se añade esto!!!
+    //await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address) //Error en los tests si no se añade esto!!!
     log("---------------------------------------------------------")
 }
 

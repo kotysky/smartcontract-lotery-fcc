@@ -5,6 +5,7 @@ require("dotenv").config()
 require("solidity-coverage")
 require("hardhat-gas-reporter")
 require("hardhat-contract-sizer")
+require("@nomicfoundation/hardhat-network-helpers")
 
 const RPC_SEPOLIA_URL = process.env.RPC_SEPOLIA_URL
 const PRIVATE_KEY = process.env.PRIVATE_KEY
@@ -22,6 +23,12 @@ module.exports = {
             blockConfirmations: 6,
             url: RPC_SEPOLIA_URL,
             accounts: [PRIVATE_KEY],
+        },
+    },
+    etherscan: {
+        // yarn hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
+        apiKey: {
+            sepolia: ETHERSCAN_API_KEY,
         },
     },
     gasReporter: {
