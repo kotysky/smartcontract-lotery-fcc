@@ -39,19 +39,19 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     } else {
         /*const name = networkConfig[chainId]["name"]
         console.log("Name: ", name)*/
-        console.log("ChainId:", chainId)
+        //console.log("ChainId:", chainId)
         vrfCoordinatorV2address = networkConfig[chainId]["vrfCoordinatorV2"]
-        console.log("Address:", vrfCoordinatorV2address)
+        //console.log("Address:", vrfCoordinatorV2address)
         subscriptionId = networkConfig[chainId]["subscriptionId"]
-        console.log(vrfCoordinatorV2address, "----", subscriptionId)
+        //console.log(vrfCoordinatorV2address, "----", subscriptionId)
     }
     const name = networkConfig[chainId]["name"]
-    console.log("Name: ", name)
+    //console.log("Name: ", name)
     const entranceFee = networkConfig[chainId]["entranceFee"]
     const gasLane = networkConfig[chainId]["gasLane"]
     const callbackGasLimit = networkConfig[chainId]["callbackGasLimit"]
     const interval = networkConfig[chainId]["interval"]
-    console.log(entranceFee, "    ", callbackGasLimit, "   ", callbackGasLimit, "   ", interval)
+    //console.log(entranceFee, "    ", callbackGasLimit, "   ", callbackGasLimit, "   ", interval)
 
     const arguments = [
         vrfCoordinatorV2address,

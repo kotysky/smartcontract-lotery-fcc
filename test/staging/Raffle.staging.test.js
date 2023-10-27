@@ -13,6 +13,7 @@ developmentChains.includes(network.name)
               raffleDeploy = await deployments.get("Raffle")
               raffle = await ethers.getContractAt(raffleDeploy.abi, raffleDeploy.address)
               raffleEntranceFee = await raffle.getEntranceFee()
+              console.log("Fee:", raffleEntranceFee)
           })
 
           describe("fulfillRandomWords", () => {
@@ -21,6 +22,7 @@ developmentChains.includes(network.name)
                   const accounts = await ethers.getSigners()
 
                   await new Promise(async (resolve, reject) => {
+                      console.log("Entering  once")
                       raffle.once("WinnerPicked", async () => {
                           console.log("WinnerPicked event fired!!")
 
@@ -45,10 +47,14 @@ developmentChains.includes(network.name)
                               resolve()
                           } catch (error) {
                               console.log(error)
-                              reject()
+                              reject(error)
                           }
                       })
-                      await raffle.enterRaffle({ value: raffle.raffleEntranceFee })
+                      console.log("Entering Raffle...")
+                      await raffle.enterRaffle({ value: raffleEntranceFee })
+                      await tx.wait(1)
+                      console.log("Ok, time to wait...")
+
                       const winnerStartingBalance = ethers.provider.getBalance(accounts[0])
                   })
               })
