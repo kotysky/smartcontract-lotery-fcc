@@ -13,19 +13,27 @@ module.exports = async function () {
         updateContractAddresses()
         updateAbi()
         console.log("Front end written!")
+        console.log("--------------------------------------------------------------")
     }
 }
 
 async function updateAbi() {
     const raffleDeploy = await deployments.get("Raffle")
+
+    console.log(raffleDeploy.abi)
+    console.log("--------------------------------------------------------------")
+    console.log("Address:\n", raffleDeploy.address)
+    console.log("--------------------------------------------------------------")
     const raffle = await ethers.getContractAt(raffleDeploy.abi, raffleDeploy.address)
     //////////////// Error ethers 5 ///////////////////////////////////////////////
     //fs.writeFileSync(FRONT_END_ABI_FILE, raffle.interface.format(ethers.FormatTypes.json))
     /////////////////////////////////////////////////////////////////////////////
 
     //////////////   Ether 6 works ///////////////////////////////////////////
-    fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffle.interface.format("json")))
+    //fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffle.interface.format("json")))
     /////////////////////////////////////////////////////////////////////
+    //fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffleDeploy.abi))
+    fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffle.interface.formatJson()))
 }
 
 async function updateContractAddresses() {
@@ -37,14 +45,18 @@ async function updateContractAddresses() {
     const currentAddresses = JSON.parse(fs.readFileSync(FRONT_END_ADDRESSES_FILE, "utf8"))
     const chainId = network.config.chainId.toString()
     const raffleAddress = await raffle.getAddress()
+    // console.log("RaffleAddress before:", raffleAddress)
     console.log("ChainId: ", chainId)
-    console.log(chainId in currentAddresses)
+    //console.log(chainId in currentAddresses)
+    //console.log("currentAddress before:", currentAddresses[chainId])
+    //console.log("Iguales?:", raffleAddress == currentAddresses[chainId])
+
     if (chainId in currentAddresses) {
-        if (!currentAddresses.includes(raffleAddress)) {
-            //currentAddresses[chainId].push(raffle.address)
+        if (!(currentAddresses[chainId] != raffleAddress)) {
+            //currentAddresses[chainId].push(raffle.address)  Error ethers 5
 
             console.log("RaffleAddress 1", raffleAddress)
-            currentAddresses[chainId] = [[chainId], raffleAddress]
+            currentAddresses[chainId] = [raffleAddress]
         }
     } else {
         console.log("RaffleAddress 2", raffleAddress)
