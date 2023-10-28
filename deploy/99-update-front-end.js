@@ -20,10 +20,10 @@ module.exports = async function () {
 async function updateAbi() {
     const raffleDeploy = await deployments.get("Raffle")
 
-    console.log(raffleDeploy.abi)
+    /*console.log(raffleDeploy.abi)
     console.log("--------------------------------------------------------------")
     console.log("Address:\n", raffleDeploy.address)
-    console.log("--------------------------------------------------------------")
+    console.log("--------------------------------------------------------------")*/
     const raffle = await ethers.getContractAt(raffleDeploy.abi, raffleDeploy.address)
     //////////////// Error ethers 5 ///////////////////////////////////////////////
     //fs.writeFileSync(FRONT_END_ABI_FILE, raffle.interface.format(ethers.FormatTypes.json))
@@ -63,6 +63,7 @@ async function updateContractAddresses() {
         currentAddresses[chainId] = [raffleAddress]
     }
     console.log("currentAddress:", currentAddresses[chainId])
+    console.log("--------------------------------------------------------------")
     fs.writeFileSync(FRONT_END_ADDRESSES_FILE, JSON.stringify(currentAddresses))
 }
 module.exports.tags = ["all", "frontend"]
