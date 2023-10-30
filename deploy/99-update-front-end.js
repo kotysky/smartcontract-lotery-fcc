@@ -30,15 +30,14 @@ async function updateAbi() {
     /////////////////////////////////////////////////////////////////////////////
 
     //////////////   Ether 6 works ///////////////////////////////////////////
-    //fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffle.interface.format("json")))
-    /////////////////////////////////////////////////////////////////////
-    //fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffleDeploy.abi))
-    fs.writeFileSync(FRONT_END_ABI_FILE, JSON.stringify(raffle.interface.formatJson()))
+    fs.writeFileSync(FRONT_END_ABI_FILE, raffle.interface.formatJson())
+    ////////////////////////////////////////////////////////////////////////////
+
+    /*console.log("Interface:", raffle.interface)
+    console.log("--------------------------------------------------------------")*/
 }
 
 async function updateContractAddresses() {
-    //const raffle = await ethers.getContract("Raffle")
-
     const raffleDeploy = await deployments.get("Raffle")
     const raffle = await ethers.getContractAt(raffleDeploy.abi, raffleDeploy.address)
 
