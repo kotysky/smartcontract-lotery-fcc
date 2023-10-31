@@ -67,7 +67,10 @@ contract Raffle is VRFConsumerBaseV2, AutomationCompatibleInterface {
     function enterRaffle() public payable {
         // require(msg.value >= i_entranceFee, "Not enough value sent");
         // require(s_raffleState == RaffleState.OPEN, "Raffle is not open");
-
+        console.log(
+            "////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////"
+        );
+        console.log("Enter raffle entrance fee: ", msg.value);
         if (msg.value < i_entranceFee) {
             revert Raffle__SendMoreToEnterRaffle();
         }
